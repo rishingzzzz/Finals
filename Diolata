@@ -1,0 +1,178 @@
+
+	// Irish's Body Mass Index Application is the name of the program.
+	// The user should  register first in this program.
+	// The user must enter the correct password that corresponds to the confirming password.
+	// You have now successfully registered and can begin calculating your BMI.
+	// You can calculate your family and friends' BMI by entering their name, weight, and height.
+	// At the end of this program, the weight transaction history of all the names entered will be displayed.
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+
+
+namespace diolata;
+class Program
+{
+    static List<double> Weight = new List<double>();
+    static List<string> Name = new List<string>();
+    static char YN;
+    static DateTime now = DateTime.Now;
+
+  
+    static void Main(string[] args)
+    {
+		string Password, CPassword;
+		
+		{
+   
+			Console.WriteLine("\nYOU MUST REGISTER FIRST!\n ");
+			
+			Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.WriteLine("Kindly answer the following:\n");
+			
+			Console.ForegroundColor = ConsoleColor.White;
+			Console.Write("Fullname: ");
+			Console.ReadLine();
+			Console.Write("Email: ");
+			Console.ReadLine();
+			Console.Write("Username: ");
+			Console.ReadLine();
+			Console.Write("Password: ");
+			Password = Console.ReadLine();
+			
+			rep:
+			Console.ForegroundColor = ConsoleColor.White;
+			Console.Write("Confirm Password: ");
+			CPassword = Console.ReadLine();
+			
+			if(Password == CPassword)
+			{
+				
+				 Console.ForegroundColor = ConsoleColor.DarkYellow;
+				 Console.WriteLine("\nYOU ARE SUCCESSFULLY REGISTERED!");
+				
+			}
+			else
+			{
+				 Console.ForegroundColor = ConsoleColor.Red;
+				Console.WriteLine("Incorrect Password. Try Again!");
+				
+				goto rep;
+		
+			}
+		
+        do
+        {
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.WriteLine("\n\nThis Program is Created by:\n");
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine("-------------------------------------");
+            Console.WriteLine("     ***    *****    ******     ******       ");
+            Console.WriteLine("      *       *      *     *    *     *    ");
+            Console.WriteLine("      *       *      *     *    *      *     ");
+            Console.WriteLine(" *    *       *      *****      *      *          ");
+            Console.WriteLine(" *    *       *      *   *      *      *     ");
+            Console.WriteLine(" *    *       *      *    *     *     *              ");
+            Console.WriteLine("  ***       *****    *     *    ******          ");
+            Console.WriteLine("--------------------------------------");
+
+
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.WriteLine("\nWELCOME TO IRISH'S BMI CALCULATOR!\n");
+
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("Good day! What is your Name?");
+            Console.ForegroundColor = ConsoleColor.Green;
+            string username = Console.ReadLine();
+            Name.Add(username);
+            Console.ForegroundColor = ConsoleColor.White;
+
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("\nHola! " + username + ". May I know your age?");
+            Console.ForegroundColor = ConsoleColor.Green;
+            int userAge = Convert.ToInt32(Console.ReadLine());
+            Console.ForegroundColor = ConsoleColor.White;
+
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("\nWe are nearly done. What is your height " + username + " in (cm)?");
+            Console.ForegroundColor = ConsoleColor.Green;
+            double userHeight = Convert.ToDouble(Console.ReadLine()); 
+            Console.ForegroundColor = ConsoleColor.White;
+
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("\nAnd finally, what is your weight in (kg)?");
+            Console.ForegroundColor = ConsoleColor.Green;
+            double userWeight = Convert.ToDouble(Console.ReadLine());
+            Weight.Add(userWeight); // all value of weight will add to list
+            Console.ForegroundColor = ConsoleColor.White;
+
+           
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\nAccording to the survey results (collected on " + now + " ) \nYour name is " + username + ". You are " + userAge + " years old, your height is " + userHeight + " in centimeters and your weight is " + userWeight + " in kilograms.");
+
+            double bmi = calcBMI(userWeight, userHeight);
+
+            bmiAdvice(bmi);
+
+            int milliseconds = 2000;
+            Thread.Sleep(milliseconds);
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("\nPlease take note that BMI \ndoes not make a body fat or health diagnosis for a person, \nbut it does screen for weight categories \nthat may cause health issues.");
+
+			      Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("\nWould you like to calculate again? [Y/N]");
+            YN = Console.ReadLine()[0];
+        }
+        while (YN != 'N');
+		    Console.ForegroundColor = ConsoleColor.DarkCyan;
+        Console.WriteLine("\n Weight Transaction History: ");
+        foreach (var history in Name.Zip(Weight))
+        {
+		      	Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("Hi there " + history.Item1 + " here is your weight " + history.Item2 + " kg as of " + now);
+        }
+        
+
+    }
+
+    static double calcBMI(double userWeight, double userHeight)
+    {
+        userHeight = userHeight / 100;
+        double bmi = userWeight / (userHeight * userHeight);
+        return bmi;
+    }
+
+
+    static void bmiAdvice(double bmi)
+    {
+        int milliseconds = 2000;
+        Thread.Sleep(milliseconds);
+        bmi = Math.Round(bmi, 2);
+        if (bmi < 18.5)
+        {
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("\nYour BMI (Body Mass Index) is " + bmi + ". According to guidelines you are UNDERWEIGHT and possibly malnourished.\nYou need to eat more frequently.");
+        }
+        if (bmi >= 18.5 && bmi <= 24.9)
+        {
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("\nYour BMI (Body Mass Index) is " + bmi + ". According to guidelines you falls within the HEALTHY weight range.\nYou have nothing to worry about.");
+        }
+        if (bmi >= 25 && bmi <= 29.9)
+        {
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("\nYour BMI (Body Mass Index) is " + bmi + ". According to guidelines you are OVERWEIGHT.\nYou need to eat a healthy diet and regular exercise.");
+        }
+        if (bmi > 30)
+        {
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("\nYour BMI (Body Mass Index) is " + bmi + ". According to guidelines you are OBESE.\nYou need to eat healthy foods, have balanced diet, and a regular exercise.");
+        }
+    }
+}
+}
